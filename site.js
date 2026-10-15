@@ -42,7 +42,8 @@ const dialog=document.querySelector('.lightbox');document.querySelectorAll('.gal
 if(!reduced&&'IntersectionObserver'in window){
   document.documentElement.classList.add('motion');
   document.querySelectorAll('.space-image,.food-card,.gallery-card,.merch-teaser>img,.product-image,.contact h2').forEach((el)=>el.classList.add('visual-reveal'));
-  const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('seen');obs.unobserve(e.target)}}),{threshold:.08});
+  document.addEventListener('animationend',event=>{if(event.animationName==='pixel-text-in'&&event.target.classList?.contains('pixel-char'))event.target.classList.add('pixel-done')});
+  const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('seen');if(e.target.classList.contains('pixel-text'))setTimeout(()=>e.target.classList.add('pixel-complete'),450);obs.unobserve(e.target)}}),{threshold:.08});
   document.querySelectorAll('.reveal,.visual-reveal,.pixel-text').forEach(e=>obs.observe(e));
   document.addEventListener('focusin',e=>e.target.closest('.visual-reveal')?.classList.add('seen'));
 }

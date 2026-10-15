@@ -168,11 +168,16 @@ footer{border-top:1px solid var(--acid);background:#020402}
 .pixel-word{display:inline-block;white-space:nowrap}
 .intro h2 .pixel-word+.pixel-word{margin-left:.16em}
 .motion .intro.reveal,.motion .menu-heading.reveal,.motion .art>div.reveal{opacity:1;transform:none;transition:none}
-.pixel-char{display:inline;color:inherit}
+.pixel-char{position:relative;display:inline-block;color:inherit}
+.pixel-char:after{content:"";position:absolute;left:50%;top:50%;width:.18em;height:.18em;background:var(--acid);box-shadow:-.32em -.24em 0 var(--acid),.3em -.12em 0 var(--acid),-.18em .28em 0 var(--acid),.34em .3em 0 var(--acid);transform:translate(-50%,-50%);opacity:0;pointer-events:none}
 .motion .pixel-text:not(.seen) .pixel-char{opacity:0}
-.motion .pixel-text.seen .pixel-char{animation:pixel-text-in .12s steps(1,end) both;animation-delay:var(--pixel-delay,0ms)}
-@keyframes pixel-text-in{from{opacity:0}to{opacity:1}}
-@media(prefers-reduced-motion:reduce){.pixel-char{opacity:1;animation:none}}
+.motion .pixel-text.seen .pixel-char:not(.pixel-done){animation:pixel-text-in .18s steps(3,end) both;animation-delay:var(--pixel-delay,0ms)}
+.motion .pixel-text.seen .pixel-char:not(.pixel-done):after{animation:pixel-noise-out .18s steps(3,end) both;animation-delay:var(--pixel-delay,0ms)}
+.pixel-char.pixel-done,.pixel-text.pixel-complete .pixel-char{animation:none!important;opacity:1!important;color:inherit!important}
+.pixel-char.pixel-done:after,.pixel-text.pixel-complete .pixel-char:after{display:none!important;animation:none!important}
+@keyframes pixel-text-in{0%{opacity:0}25%{opacity:1}100%{opacity:1}}
+@keyframes pixel-noise-out{0%,35%{opacity:.95}100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.pixel-char{opacity:1;animation:none}.pixel-char:after{display:none}}
 
 /* The opening signal is drawn in canvas; it adds no video download. */
 .loader{background:#030805;animation:none;isolation:isolate}
