@@ -126,7 +126,7 @@ body{background-color:var(--ink);font-family:Manrope,Arial,sans-serif}
 .intro:before,.menu:before,.art:before,.faq:before,.contact:before{position:absolute;right:var(--pad);top:28px;color:#9cff004d;font:700 11px/1 "Courier New",monospace;letter-spacing:.13em}
 .intro:before{content:"[ NODE_01 / SPACE ]"}.menu:before{content:"[ NODE_02 / MENU ]"}.art:before{content:"[ NODE_03 / SIGNAL ]"}.faq:before{content:"[ NODE_06 / FAQ ]"}.contact:before{content:"[ NODE_06 / LOCATION ]"}
 h2{font-weight:600;text-transform:uppercase;letter-spacing:-.075em;text-wrap:balance}
-.intro h2,.art h2,.gallery-title,.contact h2{filter:drop-shadow(3px 3px 0 #163600)}
+.contact h2{text-shadow:3px 3px 0 #163600}
 .intro p,.art p,.space-footer p,.faq-list p{color:#aab4aa}
 .space-image,.art-image,.merch-teaser img,.gallery-card,.food-card{filter:saturate(.72) contrast(1.1);border:1px solid var(--line)}
 .space-image:after,.merch-teaser:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(135deg,#9cff0012,transparent 40%)}
@@ -167,17 +167,12 @@ footer{border-top:1px solid var(--acid);background:#020402}
 /* Scroll text assembles from signal pixels. */
 .pixel-word{display:inline-block;white-space:nowrap}
 .intro h2 .pixel-word+.pixel-word{margin-left:.16em}
-.pixel-char{position:relative;display:inline-block;opacity:1;color:inherit}
-.motion .pixel-char{opacity:0;transform:translateY(9px) scale(.75)}
-.pixel-char:after{content:"";position:absolute;left:50%;top:50%;width:.18em;height:.18em;background:var(--acid);box-shadow:-.32em -.24em 0 var(--acid),.3em -.12em 0 var(--acid),-.18em .28em 0 var(--acid),.34em .3em 0 var(--acid);transform:translate(-50%,-50%) scale(1);opacity:0}
-.motion .pixel-char:after{opacity:.95}
-.pixel-text.seen .pixel-char{animation:pixel-text-in .46s steps(5,end) both;animation-delay:var(--pixel-delay,0ms)}
-.pixel-text.seen .pixel-char:after{animation:pixel-noise-out .46s steps(4,end) both;animation-delay:var(--pixel-delay,0ms)}
-.pixel-text.is-settled .pixel-char{animation:none;opacity:1;transform:none;color:inherit;text-shadow:none}
-.pixel-text.is-settled .pixel-char:after{display:none;animation:none}
-@keyframes pixel-text-in{0%{opacity:0;transform:translateY(9px) scale(.75);color:var(--acid)}45%{opacity:1;transform:translateY(0) scale(1.02);color:var(--acid)}100%{opacity:1;transform:none;color:inherit}}
-@keyframes pixel-noise-out{0%,45%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(3)}}
-@media(prefers-reduced-motion:reduce){.pixel-char{opacity:1;transform:none;filter:none;color:inherit}.pixel-char:after{display:none}}
+.motion .intro.reveal,.motion .menu-heading.reveal,.motion .art>div.reveal{opacity:1;transform:none;transition:none}
+.pixel-char{display:inline;color:inherit}
+.motion .pixel-text:not(.seen) .pixel-char{opacity:0}
+.motion .pixel-text.seen .pixel-char{animation:pixel-text-in .12s steps(1,end) both;animation-delay:var(--pixel-delay,0ms)}
+@keyframes pixel-text-in{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.pixel-char{opacity:1;animation:none}}
 
 /* The opening signal is drawn in canvas; it adds no video download. */
 .loader{background:#030805;animation:none;isolation:isolate}

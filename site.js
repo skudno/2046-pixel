@@ -28,7 +28,7 @@ const pixelizeText=el=>{
     node.textContent.split(/(\s+)/).forEach(part=>{
       if(!part.trim()){fragment.append(part);return}
       const word=document.createElement('span');word.className='pixel-word';word.setAttribute('aria-hidden','true');
-      [...part].forEach(character=>{const cell=document.createElement('span');cell.className='pixel-char';cell.textContent=character;cell.style.setProperty('--pixel-delay',`${Math.min(characterIndex++*16,640)}ms`);word.append(cell)});
+      [...part].forEach(character=>{const cell=document.createElement('span');cell.className='pixel-char';cell.textContent=character;cell.style.setProperty('--pixel-delay',`${Math.min(characterIndex++*7,180)}ms`);word.append(cell)});
       fragment.append(word);
     });
     node.replaceWith(fragment);
@@ -42,7 +42,7 @@ const dialog=document.querySelector('.lightbox');document.querySelectorAll('.gal
 if(!reduced&&'IntersectionObserver'in window){
   document.documentElement.classList.add('motion');
   document.querySelectorAll('.space-image,.food-card,.gallery-card,.merch-teaser>img,.product-image,.contact h2').forEach((el)=>el.classList.add('visual-reveal'));
-  const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('seen');if(e.target.classList.contains('pixel-text'))setTimeout(()=>e.target.classList.add('is-settled'),1250);obs.unobserve(e.target)}}),{threshold:.08});
+  const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('seen');obs.unobserve(e.target)}}),{threshold:.08});
   document.querySelectorAll('.reveal,.visual-reveal,.pixel-text').forEach(e=>obs.observe(e));
   document.addEventListener('focusin',e=>e.target.closest('.visual-reveal')?.classList.add('seen'));
 }
