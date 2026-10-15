@@ -249,25 +249,3 @@ if(ledCanvas){
   addEventListener('resize',resizeLed,{passive:true});
   document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(frame);last=0}else if(!reduced)frame=requestAnimationFrame(animateLed)});
 }
-const consentKey='2046-consent';
-const banner=document.querySelector('.cookie-banner');
-let pageviewSent=false;
-function deviceType(){const width=window.innerWidth;return width<600?'mobile':width<1024?'tablet':'desktop'}
-function referrerHost(){try{return document.referrer?new URL(document.referrer).hostname:''}catch{return ''}}
-function track(event){
-  if(localStorage.getItem(consentKey)!=='analytics')return;
-  const payload=JSON.stringify({event,path:location.pathname,referrer:referrerHost(),device:deviceType()});
-  if(navigator.sendBeacon)navigator.sendBeacon('/api/collect',new Blob([payload],{type:'application/json'}));
-  else fetch('/api/collect',{method:'POST',headers:{'Content-Type':'application/json'},body:payload,keepalive:true}).catch(()=>{});
-}
-function applyConsent(value){
-  localStorage.setItem(consentKey,value);
-  banner?.setAttribute('hidden','');
-  if(value==='analytics'&&!pageviewSent){pageviewSent=true;track('pageview')}
-}
-function showConsent(){banner?.removeAttribute('hidden');banner?.querySelector('button')?.focus()}
-document.querySelectorAll('[data-cookie]').forEach(button=>button.addEventListener('click',()=>applyConsent(button.dataset.cookie)));
-document.querySelectorAll('[data-cookie-settings]').forEach(button=>button.addEventListener('click',showConsent));
-document.querySelectorAll('[data-event]').forEach(link=>link.addEventListener('click',()=>track(link.dataset.event)));
-document.querySelectorAll('.product-grid a').forEach(link=>link.addEventListener('click',()=>track('merch')));
-if(!localStorage.getItem(consentKey))banner?.removeAttribute('hidden');else if(localStorage.getItem(consentKey)==='analytics'){pageviewSent=true;track('pageview')}
